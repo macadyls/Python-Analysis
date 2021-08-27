@@ -11,7 +11,6 @@ net_total = 0
 net_monthly_avg = 0
 greatest_increase = [0,0]
 greatest_decrease = [0,0]
-prev_net = 0
 net_change_list = []
 month_of_change = []
 
@@ -19,9 +18,14 @@ month_of_change = []
 with open(budget_csv) as financial_data:
     read = csv.reader(financial_data, delimiter=",")
 
-    # Read the header row first 
-    header = next(financial_data)
+    # Extract the header row first 
+    header = next(read)
     print(f"Header: {header}")
+
+    # Extract first row for net change and add to months
+    first_row = next(read)
+    prev_net = int(first_row[1])
+    total_months = total_months + 1
 
 
     # Read through each row of data after the header
@@ -38,7 +42,8 @@ with open(budget_csv) as financial_data:
         net_change_list = net_change_list + [net_change]
         month_of_change = month_of_change + [row[0]]
 
-        
+        #Test with revenue variable
+        #revenue = revenue + int(row[1])
 
         # Calculate the greatest increase
         if net_change > greatest_increase[1]:
@@ -51,10 +56,7 @@ with open(budget_csv) as financial_data:
             greatest_decrease[1] = net_change
 
 # Calculate the Average Net Change 
-    net_monthly_avg = sum(net_change_list) / len(net_change_list)
-
-        
-
+net_monthly_avg = sum(net_change_list) / len(net_change_list)
 
 # Output Summary
 output = (
@@ -62,10 +64,20 @@ output = (
     f"----------------------------\n"
     f"Total Months: {total_months}\n"
     f"Total: ${net_total:,}\n"
-    f"Average Change: ${net_monthly_avg:.2f}\n"
+    f"Average Change: ${net_monthly_avg:,.2f}\n"
     f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]:,})\n"
     f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]:,})\n"
     )
 
 # Print the output (to terminal)
 print(output)
+
+# Export results into text file 
+# Set variable for output file
+output_file = os.path.join("PyBank", "analysis","budget_analysis.txt")
+
+# Open the output file
+with open(output_file, "w", newline="") as txt_file:
+    
+    # Write results into file
+    txt_file.write(output)
