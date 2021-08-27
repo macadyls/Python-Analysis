@@ -20,7 +20,7 @@ with open(budget_csv) as financial_data:
 
     # Extract the header row first 
     header = next(read)
-    print(f"Header: {header}")
+    #print(f"Header: {header}")
 
     # Extract first row for net change and add to months
     first_row = next(read)
@@ -63,10 +63,10 @@ output = (
     f"\nFinancial Analysis\n"
     f"----------------------------\n"
     f"Total Months: {total_months}\n"
-    f"Total: ${net_total:,}\n"
+    f"Total: ${net_total:,.2f}\n"
     f"Average Change: ${net_monthly_avg:,.2f}\n"
-    f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]:,})\n"
-    f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]:,})\n"
+    f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]:,.2f})\n"
+    f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]:,.2f})\n"
     )
 
 # Print the output (to terminal)
@@ -76,7 +76,7 @@ print(output)
 # Set variable for output file
 output_file = os.path.join("PyBank", "analysis","budget_analysis.txt")
 
-# Open the output file
+# Path to output file
 with open(output_file, "w", newline="") as txt_file:
     
     # Write results into file
